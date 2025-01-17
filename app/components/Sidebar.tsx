@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { Home, Hash, Bell, Mail, Bookmark, User, MoreHorizontal, LogOut } from 'lucide-react'
-
+import toast from 'react-hot-toast'
 interface SidebarProps {
   setCurrentPage: (page: string) => void
   currentPage: string
@@ -19,6 +19,13 @@ export default function Sidebar({ setCurrentPage, currentPage, setIsLoggedIn }: 
     { icon: User, label: 'Profile', page: 'profile' },
     { icon: MoreHorizontal, label: 'More', page: 'more' },
   ]
+
+  const handleLogout = () => {
+    localStorage.removeItem('accessToken')
+    localStorage.setItem('isLoggedIn', 'false')
+    toast.success('Logged out successfully!', { duration: 4000 })
+    setIsLoggedIn(false)
+  }
 
   return (
     <motion.aside
@@ -48,7 +55,7 @@ export default function Sidebar({ setCurrentPage, currentPage, setIsLoggedIn }: 
           </motion.button>
         ))}
         <motion.button
-          onClick={() => setIsLoggedIn(false)}
+          onClick={handleLogout}
           className="flex items-center space-x-2 px-4 py-2 rounded-full w-full text-left transition-colors text-red-500 hover:bg-red-100 dark:hover:bg-red-900"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -60,4 +67,3 @@ export default function Sidebar({ setCurrentPage, currentPage, setIsLoggedIn }: 
     </motion.aside>
   )
 }
-
